@@ -11,7 +11,8 @@ public class Util {
     static List<String> readNamesFromFile(String fileName, boolean formatHasId) {
         List<String> names = new ArrayList<>();
         var f = new File(System.getProperty("user.dir")).getParentFile();
-        try (Scanner sc = new Scanner(Paths.get(f.getAbsolutePath() + File.separator + fileName))) {
+        var p = Paths.get(f.getAbsolutePath() + File.separator + fileName);
+        try (Scanner sc = new Scanner(p)) {
             while (sc.hasNextLine()) {
                 if (formatHasId) {
                     String id = sc.next();
