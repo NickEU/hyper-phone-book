@@ -38,9 +38,9 @@ public class Util {
         long sec = ms / MS_IN_SEC;
         ms = ms % MS_IN_SEC;
 
-        String resultMin = min + "min. ";
-        String resultSec = sec + "sec. ";
-        String resultMs = ms + "ms.";
+        String resultMin = min + " min. ";
+        String resultSec = sec + " sec. ";
+        String resultMs = ms + " ms.";
         return (resultMin + resultSec + resultMs).trim();
     }
 }
