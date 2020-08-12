@@ -27,4 +27,20 @@ public class Util {
         }
         return names;
     }
+
+    static String convertMsToMinSec(long msElapsed) {
+        int MS_IN_MIN = 60_000;
+        int MS_IN_SEC = 1000;
+        long ms = msElapsed;
+
+        long min = ms / MS_IN_MIN;
+        ms = ms % MS_IN_MIN;
+        long sec = ms / MS_IN_SEC;
+        ms = ms % MS_IN_SEC;
+
+        String resultMin = min + " min. ";
+        String resultSec = sec + " sec. ";
+        String resultMs = ms + " ms.";
+        return (resultMin + resultSec + resultMs).trim();
+    }
 }
