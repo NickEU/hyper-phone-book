@@ -1,8 +1,8 @@
 package phonebook;
 
 class Stopwatch {
-    private final long start;
-    private Long elapsed;
+    private long start;
+    private long elapsed;
     private boolean isStopped;
 
     Stopwatch() {
@@ -23,5 +23,11 @@ class Stopwatch {
         }
 
         return elapsed;
+    }
+
+    Stopwatch reset() {
+        start = System.currentTimeMillis();
+        isStopped = false;
+        return this;
     }
 }
