@@ -8,10 +8,10 @@ import java.util.List;
 
 class PhoneBook {
     private final List<String> directory
-        = Util.readNamesFromFile("directory.txt", true);
+        = Util.readNamesFromFile("directory.txt", Util.FileFormat.NAME_WITH_ID);
     private final List<String> lookingFor
-        = Util.readNamesFromFile("find.txt", false);
-    private Stopwatch lastOperationTimer;
+        = Util.readNamesFromFile("find.txt", Util.FileFormat.NAME);
+    private final Stopwatch lastOperationTimer = new Stopwatch();
     private long bubbleSortTimeLimit = 5000;
 
     String linearSearch() {
@@ -22,7 +22,7 @@ class PhoneBook {
     }
 
     private String findUsingAlgorithm(ISearch searchAlgorithm) {
-        lastOperationTimer = new Stopwatch();
+        lastOperationTimer.reset();
         long namesFound = 0;
         for (String searchFor : lookingFor) {
             if (searchAlgorithm.tryFindElement(directory, searchFor)) {
@@ -33,8 +33,7 @@ class PhoneBook {
     }
 
     public String jumpSearch() {
-        lastOperationTimer = new Stopwatch();
-        boolean bubbleSortSuccess = SortBubble.trySort(lastOperationTimer, bubbleSortTimeLimit, directory);
+        boolean bubbleSortSuccess = SortBubble.trySort(lastOperationTimer.reset(), bubbleSortTimeLimit, directory);
         String reportSortResult = "Sorting time: " + Util.convertMsToMinSec(lastOperationTimer.stop())
             + (bubbleSortSuccess ? "\n" : " - STOPPED, moved to linear search\n");
 
