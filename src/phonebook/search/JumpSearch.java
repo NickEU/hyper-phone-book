@@ -4,34 +4,39 @@ import java.util.List;
 
 public class JumpSearch implements ISearch {
     @Override
-    public boolean tryFindElement(List<String> directory, String searchFor) {
-        if (directory.get(0).equals(searchFor)) {
+    public boolean tryFindElement(List<String> searchIn, String searchFor) {
+        if (searchIn.get(0).equals(searchFor)) {
             return true;
         }
-        int blockSize = (int) Math.sqrt(directory.size());
+        int blockSize = (int) Math.sqrt(searchIn.size());
         int i = blockSize;
-        while (i < directory.size()) {
-            if (directory.get(i).equals(searchFor)) {
+        while (i < searchIn.size()) {
+            if (searchIn.get(i).equals(searchFor)) {
                 return true;
             }
 
-            if (directory.get(i).compareTo(searchFor) < 0) {
+            if (searchIn.get(i).compareTo(searchFor) < 0) {
                 i += blockSize;
             } else {
                 int lowerBound = i - blockSize + 1;
                 while (i-- >= lowerBound) {
-                    if (directory.get(i).compareTo(searchFor) == 0) {
+                    if (searchIn.get(i).compareTo(searchFor) == 0) {
                         return true;
                     }
                 }
                 return false;
             }
 
-            if (i >= directory.size()) {
-                i = directory.size() - 1;
+            if (i >= searchIn.size()) {
+                i = searchIn.size() - 1;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public String getName() {
+        return "jump";
     }
 }

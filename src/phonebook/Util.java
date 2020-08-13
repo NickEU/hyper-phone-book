@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Util {
-    static List<String> readNamesFromFile(String fileName, boolean formatHasId) {
+    static List<String> readNamesFromFile(String fileName, FileFormat format) {
         List<String> names = new ArrayList<>();
         var f = new File(System.getProperty("user.dir")).getParentFile();
         var p = Paths.get(f.getAbsolutePath() + File.separator + fileName);
         try (Scanner sc = new Scanner(p)) {
             while (sc.hasNextLine()) {
-                if (formatHasId) {
+                if (format == FileFormat.NAME_WITH_ID) {
                     String id = sc.next();
                 }
 
@@ -42,5 +42,10 @@ public class Util {
         String resultSec = sec + " sec. ";
         String resultMs = ms + " ms.";
         return (resultMin + resultSec + resultMs).trim();
+    }
+
+    enum FileFormat {
+        NAME_WITH_ID,
+        NAME
     }
 }
