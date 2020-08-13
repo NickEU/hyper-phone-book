@@ -4,9 +4,15 @@ public class Stopwatch {
     private long start;
     private long elapsed;
     private boolean isStopped;
+    private final long timeLimit;
 
     Stopwatch() {
+        this(10_000);
+    }
+
+    public Stopwatch(long timeLimit) {
         start = System.currentTimeMillis();
+        this.timeLimit = timeLimit;
     }
 
     public long getElapsed() {
@@ -29,5 +35,9 @@ public class Stopwatch {
         start = System.currentTimeMillis();
         isStopped = false;
         return this;
+    }
+
+    public boolean wentOverLimit() {
+        return getElapsed() >= timeLimit;
     }
 }

@@ -17,15 +17,14 @@ class PhoneBook {
     private List<String> sortedDirectory;
     private final List<String> lookingFor
         = Util.readNamesFromFile("find.txt", Util.FileFormat.NAME);
-    private final Stopwatch lastOperationTimer = new Stopwatch();
-    private long timeLimitForSorting = 5000;
+    private Stopwatch lastOperationTimer = new Stopwatch();
 
     String linearSearch() {
         var linearAlgo = new LinearSearch();
         String result = String.format("Start searching (%s search)...\n", linearAlgo.getName())
             + findUsingAlgorithm(linearAlgo, unsortedDirectory)
             + reportTimeTaken(lastOperationTimer.stop());
-        timeLimitForSorting = lastOperationTimer.getElapsed() * 10;
+        lastOperationTimer = new Stopwatch(lastOperationTimer.getElapsed() * 10);
         return result;
     }
 
@@ -52,7 +51,7 @@ class PhoneBook {
         String header = String.format("Start searching (%s sort + %s search)...\n",
             sortingAlgo.getName(), searchAlgo.getName());
 
-        boolean sortSuccess = sortingAlgo.trySort(lastOperationTimer.reset(), timeLimitForSorting, prepareSortedDir());
+        boolean sortSuccess = sortingAlgo.trySort(lastOperationTimer.reset(), prepareSortedDir());
         String reportSortResult = "Sorting time: " + Util.convertMsToMinSec(lastOperationTimer.stop())
             + (sortSuccess ? "\n" : " - STOPPED, moved to linear search\n");
         long sortingTime = lastOperationTimer.getElapsed();

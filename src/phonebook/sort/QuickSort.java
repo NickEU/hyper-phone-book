@@ -6,7 +6,7 @@ import java.util.List;
 
 public class QuickSort implements ISortingAlgorithm {
     @Override
-    public boolean trySort(Stopwatch timer, long timeLimit, List<String> directory) {
+    public boolean trySort(Stopwatch timer, List<String> directory) {
         return false;
     }
 

@@ -12,14 +12,14 @@ public class BubbleSort implements ISortingAlgorithm {
     }
 
     @Override
-    public boolean trySort(Stopwatch timer, long timeLimit, List<String> directory) {
+    public boolean trySort(Stopwatch timer, List<String> directory) {
         for (int i = 0; i < directory.size(); i++) {
             for (int j = 0; j < directory.size() - 1; j++) {
                 if (directory.get(j).compareTo(directory.get(j + 1)) > 0) {
                     swap(j, j + 1, directory);
                 }
             }
-            if (timer.getElapsed() > timeLimit) {
+            if (timer.wentOverLimit()) {
                 return false;
             }
         }
