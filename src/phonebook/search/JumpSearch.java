@@ -34,4 +34,9 @@ public class JumpSearch implements ISearch {
 
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "jump";
+    }
 }

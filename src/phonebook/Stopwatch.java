@@ -1,6 +1,6 @@
 package phonebook;
 
-class Stopwatch {
+public class Stopwatch {
     private long start;
     private long elapsed;
     private boolean isStopped;
@@ -9,14 +9,14 @@ class Stopwatch {
         start = System.currentTimeMillis();
     }
 
-    long getElapsed() {
+    public long getElapsed() {
         if (!isStopped) {
             elapsed = System.currentTimeMillis() - start;
         }
         return elapsed;
     }
 
-    long stop() {
+    public long stop() {
         if (!isStopped) {
             isStopped = true;
             elapsed = System.currentTimeMillis() - start;
@@ -25,7 +25,7 @@ class Stopwatch {
         return elapsed;
     }
 
-    Stopwatch reset() {
+    public Stopwatch reset() {
         start = System.currentTimeMillis();
         isStopped = false;
         return this;

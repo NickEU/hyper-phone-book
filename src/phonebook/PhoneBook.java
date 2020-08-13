@@ -1,8 +1,12 @@
 package phonebook;
 
+import phonebook.search.BinarySearch;
 import phonebook.search.ISearch;
 import phonebook.search.JumpSearch;
 import phonebook.search.LinearSearch;
+import phonebook.sort.BubbleSort;
+import phonebook.sort.ISortingAlgorithm;
+import phonebook.sort.QuickSort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +18,14 @@ class PhoneBook {
     private final List<String> lookingFor
         = Util.readNamesFromFile("find.txt", Util.FileFormat.NAME);
     private final Stopwatch lastOperationTimer = new Stopwatch();
-    private long bubbleSortTimeLimit = 5000;
+    private long timeLimitForSorting = 5000;
 
     String linearSearch() {
-        String result = "Start searching (linear search)...\n" + findUsingAlgorithm(new LinearSearch(), unsortedDirectory);
-        result += String.format("Time taken: %s\n", Util.convertMsToMinSec(lastOperationTimer.stop()));
-        bubbleSortTimeLimit = lastOperationTimer.getElapsed() * 10;
+        var linearAlgo = new LinearSearch();
+        String result = String.format("Start searching (%s search)...\n", linearAlgo.getName())
+            + findUsingAlgorithm(linearAlgo, unsortedDirectory)
+            + reportTimeTaken(lastOperationTimer.stop());
+        timeLimitForSorting = lastOperationTimer.getElapsed() * 10;
         return result;
     }
 
@@ -34,22 +40,37 @@ class PhoneBook {
         return "Found " + namesFound + " / " + lookingFor.size() + " entries. ";
     }
 
-    public String jumpSearch() {
-        boolean bubbleSortSuccess = SortBubble.trySort(lastOperationTimer.reset(), bubbleSortTimeLimit, prepareSortedDir());
-        String reportSortResult = "Sorting time: " + Util.convertMsToMinSec(lastOperationTimer.stop())
-            + (bubbleSortSuccess ? "\n" : " - STOPPED, moved to linear search\n");
-
-        long sortingTime = lastOperationTimer.getElapsed();
-        String reportSearch = bubbleSortSuccess
-            ? findUsingAlgorithm(new JumpSearch(), sortedDirectory)
-            : findUsingAlgorithm(new LinearSearch(), unsortedDirectory);
-        long searchTime = lastOperationTimer.getElapsed();
-        String reportTotalTime = "Time taken: " + Util.convertMsToMinSec(sortingTime + searchTime) + "\n";
-        return "Start searching (bubble sort + jump search)...\n" + reportSearch + reportTotalTime
-            + reportSortResult + "Searching time: " + Util.convertMsToMinSec(searchTime);
+    String jumpSearch() {
+        return sortAndSearch(new JumpSearch(), new BubbleSort());
     }
 
-    List<String> prepareSortedDir() {
+    String binarySearch() {
+        return sortAndSearch(new BinarySearch(), new QuickSort());
+    }
+
+    private String sortAndSearch(ISearch searchAlgo, ISortingAlgorithm sortingAlgo) {
+        String header = String.format("Start searching (%s sort + %s search)...\n",
+            sortingAlgo.getName(), searchAlgo.getName());
+
+        boolean sortSuccess = sortingAlgo.trySort(lastOperationTimer.reset(), timeLimitForSorting, prepareSortedDir());
+        String reportSortResult = "Sorting time: " + Util.convertMsToMinSec(lastOperationTimer.stop())
+            + (sortSuccess ? "\n" : " - STOPPED, moved to linear search\n");
+        long sortingTime = lastOperationTimer.getElapsed();
+
+        String reportSearch = sortSuccess
+            ? findUsingAlgorithm(searchAlgo, sortedDirectory)
+            : findUsingAlgorithm(new LinearSearch(), unsortedDirectory);
+        long searchTime = lastOperationTimer.getElapsed();
+
+        return header + reportSearch + reportTimeTaken(sortingTime + searchTime)
+            + reportSortResult + "Searching time: " + Util.convertMsToMinSec(searchTime) + "\n";
+    }
+
+    private String reportTimeTaken(long ms) {
+        return "Time taken: " + Util.convertMsToMinSec(ms) + "\n";
+    }
+
+    private List<String> prepareSortedDir() {
         sortedDirectory = new ArrayList<>(unsortedDirectory);
         return sortedDirectory;
     }

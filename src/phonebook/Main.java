@@ -5,5 +5,6 @@ public class Main {
         PhoneBook book = new PhoneBook();
         System.out.println(book.linearSearch());
         System.out.println(book.jumpSearch());
+        System.out.println(book.binarySearch());
     }
 }

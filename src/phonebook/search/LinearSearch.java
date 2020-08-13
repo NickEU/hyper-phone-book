@@ -12,4 +12,9 @@ public class LinearSearch implements ISearch {
         }
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "linear";
+    }
 }
