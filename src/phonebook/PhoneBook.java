@@ -73,4 +73,25 @@ class PhoneBook {
         sortedDirectory = new ArrayList<>(unsortedDirectory);
         return sortedDirectory;
     }
+
+    public String hashTableSearch() {
+        lastOperationTimer.reset();
+        HashBook table = new HashBook(unsortedDirectory);
+        long creatingTime = lastOperationTimer.stop();
+        lastOperationTimer.reset();
+        int namesFound = 0;
+        for (var entry : lookingFor) {
+            if (table.hasEntry(entry)) {
+                namesFound++;
+            }
+        }
+        String searchResult = "Found " + namesFound + " / " + lookingFor.size() + " entries. ";
+        long searchingTime = lastOperationTimer.stop();
+
+
+        return "Start searching (hash table)...\n"
+            + searchResult + reportTimeTaken(creatingTime + searchingTime)
+            + "Creating time: " + Util.convertMsToMinSec(creatingTime) + "\n"
+            + "Searching time: " + Util.convertMsToMinSec(searchingTime);
+    }
 }
