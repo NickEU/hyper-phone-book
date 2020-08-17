@@ -6,5 +6,6 @@ public class Main {
         System.out.println(book.linearSearch());
         System.out.println(book.jumpSearch());
         System.out.println(book.binarySearch());
+        System.out.println(book.hashTableSearch());
     }
 }
